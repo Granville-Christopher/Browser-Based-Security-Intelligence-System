@@ -26,22 +26,6 @@ app.set("views", "./views");
 // Enable trust proxy
 app.set("trust proxy", true);
 
-// IP extraction utility
-const getClientIp = (req) => {
-  return (
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.connection?.remoteAddress ||
-    req.socket?.remoteAddress ||
-    req.connection?.socket?.remoteAddress
-  );
-};
-
-// Route using IP
-app.get("/geo", async (req, res) => {
-  const ip = getClientIp(req);
-  const geoData = await getGeoLocation(ip);
-  res.json({ ip, geoData });
-});
 
 // Serve static files
 app.use(express.static("public"));

@@ -6,13 +6,13 @@ dotenv.config();
 const transporter = nodemailer.createTransport({
   host: "mail.privateemail.com",
   port: 587,
-  secure: false, // This enables STARTTLS
+  secure: false,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
   tls: {
-    rejectUnauthorized: false, // sometimes needed for Namecheap servers
+    rejectUnauthorized: false,
   },
 });
 
