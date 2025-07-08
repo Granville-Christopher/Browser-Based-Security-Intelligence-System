@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/adminmodel");
+const getGeoLocation = require("../../utils/geoIP");
+const reverseGeocode = require("../../utils/reversegeocode");
 const { sendBruteForceAlert } = require("../../utils/sendbruteforcealert");
 const loginAttempts = new Map();
 
@@ -23,7 +25,9 @@ const adminLoginController = async (req, res) => {
   }
 
   try {
-    const matchedAdmin = await Admin.findOne({ email: email.toLowerCase().trim() });
+    const matchedAdmin = await Admin.findOne({
+      email: email.toLowerCase().trim(),
+    });
 
     if (!matchedAdmin) {
       recordFailedAttempt(ip);
@@ -66,7 +70,14 @@ async function recordFailedAttempt(ip) {
     if (updatedAttempt.count === MAX_ATTEMPTS) {
       console.log("📡 MAX ATTEMPTS reached. Sending alert...");
       try {
-        await sendBruteForceAlert(ip);
+        const location = await getGeoLocation(ip);
+        let address = "Unavailable";
+
+        if (location.latitude && location.longitude) {
+          address = await reverseGeocode(location.latitude, location.longitude);
+        }
+
+        await sendBruteForceAlert(ip, address);
         console.warn(`🚨 Brute force detected and alert sent from IP: ${ip}`);
       } catch (err) {
         console.error("❌ Failed to send brute-force alert:", err);
@@ -74,4 +85,5 @@ async function recordFailedAttempt(ip) {
     }
   }
 }
+
 module.exports = adminLoginController;
