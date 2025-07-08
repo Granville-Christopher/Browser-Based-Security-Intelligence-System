@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security AI Dashboard - Prototype</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .fade {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .fade.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-animate {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar-animate:hover {
+            transform: translateX(3px);
+        }
+
+        .icon-animate {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-animate:hover {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .dark .text-gray-700 {
+            color: #d1d5db;
+        }
+
+        .dark .bg-white {
+            background-color: #1f2937;
+        }
+
+        .dark .text-gray-600 {
+            color: #9ca3af;
+        }
+
+        .dark .bg-gray-100 {
+            background-color: #111827;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans transition-colors duration-300">
+    <div class="flex flex-col md:flex-row h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"
+            class="w-full md:w-64 bg-gray-900 text-white flex md:flex-col p-4 space-y-2 md:space-y-4 sidebar-animate">
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-semibold text-lg">Navigation</span>
+                <button onclick="toggleDarkMode()" class="p-1 rounded hover:bg-gray-700 icon-animate"
+                    title="Toggle Dark Mode">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+            <button class="flex items-center gap-2 text-left hover:bg-gray-700 p-2 rounded w-full icon-animate"
+                onclick="showSection('dashboard')">
+                <i data-lucide="layout-dashboard"></i> Dashboard
+            </button>
+            <button class="flex items-center gap-2 text-left hover:bg-gray-700 p-2 rounded w-full icon-animate"
+                onclick="showSection('timeline')">
+                <i data-lucide="activity"></i> Event Timeline
+            </button>
+            <button class="flex items-center gap-2 text-left hover:bg-gray-700 p-2 rounded w-full icon-animate"
+                onclick="showSection('reports')">
+                <i data-lucide="file-text"></i> Incident Reports
+            </button>
+            <button class="flex items-center gap-2 text-left hover:bg-gray-700 p-2 rounded w-full icon-animate"
+                onclick="showSection('settings')">
+                <i data-lucide="settings"></i> Settings
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-4 overflow-y-auto">
+            <div id="dashboard" class="section fade hidden">
+                <h1 class="text-2xl font-bold mb-4">Live Camera Dashboard</h1>
+
+                <div class="bg-white p-6 rounded shadow">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <!-- Video thumbnails -->
+                        <div class="relative group">
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls
+                                class="w-full h-32 object-cover rounded cursor-pointer transition duration-300 group-hover:opacity-75"></video>
+                        </div>
+                        <div class="relative group">
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls
+                                class="w-full h-32 object-cover rounded cursor-pointer transition duration-300 group-hover:opacity-75"></video>
+                        </div>
+                        <div class="relative group">
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls
+                                class="w-full h-32 object-cover rounded cursor-pointer transition duration-300 group-hover:opacity-75"></video>
+                        </div>
+                        <div class="relative group">
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls
+                                class="w-full h-32 object-cover rounded cursor-pointer transition duration-300 group-hover:opacity-75"></video>
+                        </div>
+                        <div class="relative group">
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls
+                                class="w-full h-32 object-cover rounded cursor-pointer transition duration-300 group-hover:opacity-75"></video>
+                        </div>
+                    </div>
+
+                    <!-- Modal Viewer -->
+                    <div id="videoModal"
+                        class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+                        <div class="relative w-11/12 md:w-3/4 lg:w-2/3">
+                            <video id="modalVideo" controls class="w-full h-auto rounded shadow-xl"></video>
+                            <button onclick="closeVideoModal()"
+                                class="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timeline" class="section fade hidden">
+                <h1 class="text-2xl font-bold mb-4">Event Timeline</h1>
+                <div class="bg-white p-6 rounded shadow space-y-2">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-red-500 text-white px-3 py-1 rounded text-sm">9:45 AM</div>
+                        <p class="text-gray-700">Suspicious movement detected near Gate A.</p>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">10:10 AM</div>
+                        <p class="text-gray-700">Vehicle loitering for 5+ minutes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reports" class="section fade hidden">
+                <h1 class="text-2xl font-bold mb-4">Incident Reports</h1>
+                <div class="bg-white p-6 rounded shadow">
+                    <ul class="text-gray-700 space-y-2">
+                        <li><a href="#" class="text-blue-600 hover:underline">Report_2025-07-08.pdf</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">GateA_Movement_Log.csv</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="settings" class="section fade hidden">
+                <h1 class="text-2xl font-bold mb-4">System Settings</h1>
+                <div class="bg-white p-6 rounded shadow grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Notification Email</span>
+                            <input type="email" id="notificationEmail"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded"
+                                placeholder="security@company.com" />
+                        </label>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Alert Sensitivity</span>
+                            <select id="alertSensitivity"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded">
+                                <option>Low</option>
+                                <option selected>Medium</option>
+                                <option>High</option>
+                            </select>
+                        </label>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Enable Notifications</span>
+                            <input type="checkbox" id="enableNotifications" class="mt-2" />
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Timezone</span>
+                            <select id="timezone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded">
+                                <option value="UTC">UTC</option>
+                                <option value="PST">Pacific Standard Time</option>
+                                <option value="EST">Eastern Standard Time</option>
+                                <option value="WAT">West Africa Time</option>
+                            </select>
+                        </label>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Auto-Update Camera Feed</span>
+                            <input type="checkbox" id="autoUpdate" class="mt-2" />
+                        </label>
+                        <label class="block mb-4">
+                            <span class="text-gray-700">Daily Summary Email</span>
+                            <input type="checkbox" id="dailySummary" class="mt-2" />
+                        </label>
+                    </div>
+                </div>
+                <div id="saveConfirmation"
+                    class="mt-4 hidden text-green-600 font-semibold transition-opacity duration-500">✔ Settings saved
+                    successfully!</div>
+                <div class="mt-4">
+                    <button onclick="saveSettings()"
+                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Save
+                        Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

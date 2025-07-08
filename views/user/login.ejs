@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - AI Security Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fadeInOut {
+            animation: fadeInOut 3s ease-in-out;
+        }
+    </style>
+
+</head>
+
+<body class="bg-cover bg-center bg-fixed min-h-screen flex items-center justify-center"
+    style="background-image: url('/img/dbcctv.jpg'); font-family: 'Inter', sans-serif; color: #e2e8f0; background-position: top;">
+    <div class="inset-0 bg-gray-900 bg-opacity-70 z-10 min-h-screen fixed"></div>
+    <div class="bg-gray-900 bg-opacity-70 p-8 z-20 rounded-lg shadow-lg w-full max-w-sm">
+        <form id="login" class="flex flex-col space-y-6">
+            <input type="password" name="pin" placeholder="Enter PIN" required autofocus
+                class="w-full px-4 py-3 rounded-md text-gray-900 text-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <button type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                Submit
+            </button>
+        </form>
+    </div>
+    <!-- Toast Container -->
+
+    <script src="/js/login.js"></script>
+    <div id="toast-container" class="fixed top-6 right-6 z-50 space-y-2"></div>
+</body>
+
+</html>
