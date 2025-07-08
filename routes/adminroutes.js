@@ -6,6 +6,8 @@ const adminLoginController = require("../controllers/admin/adminlogincontroller.
 const getGeoLocation = require("../utils/geoIP");
 const reverseGeocode = require("../utils/reversegeocode");
 const router = require("express").Router();
+const getOtpController = require("../controllers/admin/getotpcontroller");
+const resetPasswordController = require("../controllers/admin/resetpasswordcontroller");
 
 // IP extraction utility
 const getClientIp = (req) => {
@@ -57,7 +59,16 @@ router.get("/signup", (req, res) => {
   });
 });
 
+router.get("/resetpassword", (req, res) => {
+  return res.status(200).render("admin/resetpassword", {
+    title: "Admin - Signup",
+    message: "Admin signup",
+  });
+});
+
 router.post("/signup", signupValidationRules, adminSignupController);
 router.post("/login", adminLoginController);
+router.post("/get-otp", getOtpController);
+router.post("/resetpassword", resetPasswordController);
 
 module.exports = router;
