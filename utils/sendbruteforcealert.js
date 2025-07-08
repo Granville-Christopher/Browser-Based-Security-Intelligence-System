@@ -13,14 +13,25 @@ const sendBruteForceAlert = async (ipAddress) => {
     to: process.env.MAIL_TO,
     subject: "🚨 Brute Force Attempt Detected",
     html: `
-      <p><strong>🛡️ Brute Force Detected</strong></p>
-      <ul>
-        <li><strong>IP Address:</strong> ${ipAddress}</li>
-        <li><strong>Location:</strong> ${location.city}, ${location.region}, ${location.country}</li>
-        <li><strong>ISP:</strong> ${location.isp}</li>
-        <li><strong>Time:</strong> ${timestamp.toLocaleString()}</li>
-      </ul>
-    `,
+    <p><strong>🛡️ Brute Force Attempt Detected</strong></p>
+    <ul>
+      <li><strong>IP Address:</strong> ${ipAddress}</li>
+      <li><strong>Location:</strong> ${location.city || "Unknown"}, ${
+      location.region || "Unknown"
+    }, ${location.country || "Unknown"}</li>
+      <li><strong>ISP:</strong> ${location.isp || "Unknown"}</li>
+      <li><strong>Coordinates:</strong> ${location.latitude || "N/A"}, ${
+      location.longitude || "N/A"
+    }</li>
+      <li><strong>Physical Address:</strong> ${address || "Unavailable"}</li>
+      <li><strong>Map:</strong> ${
+        location.mapLink
+          ? `<a href="${location.mapLink}" target="_blank">View on Google Maps</a>`
+          : "Unavailable"
+      }</li>
+      <li><strong>Time:</strong> ${timestamp.toLocaleString()}</li>
+    </ul>
+  `,
   };
 
   try {

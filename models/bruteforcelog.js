@@ -5,10 +5,13 @@ const BruteForceLogSchema = new mongoose.Schema({
   city: String,
   region: String,
   country: String,
+  countryCode: String,
   isp: String,
+  ispLogo: String,
   latitude: Number,
   longitude: Number,
   mapLink: String,
+  address: String,
   attemptedAt: { type: Date, default: Date.now },
 });
 
