@@ -1,17 +1,20 @@
 const getGeoLocation = async (ip) => {
   try {
-    // Fallback if somehow IP is undefined/null
+    // Handle local or undefined IP
     if (!ip || ip === "::1" || ip === "127.0.0.1") {
       return {
         city: "Local Network",
         region: "Local",
         country: "Reserved",
         isp: "Private",
+        latitude: null,
+        longitude: null,
+        mapLink: null,
       };
     }
 
     const response = await fetch(
-      `http://ip-api.com/json/${ip}?fields=status,message,country,regionName,city,isp`
+      `http://ip-api.com/json/${ip}?fields=status,message,country,regionName,city,isp,lat,lon`
     );
 
     // Handle HTTP errors
@@ -34,14 +37,23 @@ const getGeoLocation = async (ip) => {
         region: "Local",
         country: "Reserved",
         isp: "Private",
+        latitude: null,
+        longitude: null,
+        mapLink: null,
       };
     }
+
+    const lat = data.lat || null;
+    const lon = data.lon || null;
 
     return {
       city: data.city || "Unknown",
       region: data.regionName || "Unknown",
       country: data.country || "Unknown",
       isp: data.isp || "Unknown",
+      latitude: lat,
+      longitude: lon,
+      mapLink: lat && lon ? `https://www.google.com/maps?q=${lat},${lon}` : null,
     };
   } catch (err) {
     console.error("Geo IP fetch error:", err.message || err);
@@ -50,6 +62,9 @@ const getGeoLocation = async (ip) => {
       region: "Unknown",
       country: "Unknown",
       isp: "Unknown",
+      latitude: null,
+      longitude: null,
+      mapLink: null,
     };
   }
 };

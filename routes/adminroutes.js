@@ -32,7 +32,6 @@ router.get("/geo", async (req, res) => {
     ip,
     geo,
     address,
-    mapLink: `https://www.google.com/maps?q=${geo.latitude},${geo.longitude}`,
   });
 });
 
