@@ -3,7 +3,7 @@ const {
   adminSignupController,
 } = require("../controllers/admin/admincontroller");
 const adminLoginController = require("../controllers/admin/adminlogincontroller.");
-const getGeoLocation = require("../utils/getGeoLocation");
+const getGeoLocation = require("../utils/geoIP");
 const reverseGeocode = require("../utils/reversegeocode");
 const router = require("express").Router();
 
