@@ -6,6 +6,9 @@ const BruteForceLogSchema = new mongoose.Schema({
   region: String,
   country: String,
   isp: String,
+  latitude: Number,
+  longitude: Number,
+  mapLink: String,
   attemptedAt: { type: Date, default: Date.now },
 });
 
