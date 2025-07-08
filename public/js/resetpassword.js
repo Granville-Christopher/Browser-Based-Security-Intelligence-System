@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const getOtpForm = document.getElementById("get-otp-form");
   const resetPasswordForm = document.getElementById("reset-password-form");
+  const getOtpButton = getOtpForm.querySelector("button[type='submit']");
+  const resetButton = resetPasswordForm.querySelector("button[type='submit']");
 
   // Toast Function
   function showToast(message, type = "info") {
@@ -26,7 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Toggle visibility for password fields with icons
-  // Get OTP
+  window.togglePasswordVisibility = function (inputId) {
+    const input = document.getElementById(inputId);
+    const toggleBtn = event.currentTarget;
+
+    const isPassword = input.type === "password";
+    input.type = isPassword ? "text" : "password";
+    toggleBtn.innerHTML = isPassword ? "🙈" : "👁️";
+  };
+
+  // Handle Get OTP form submission
   getOtpForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = getOtpForm.email.value.trim();
@@ -35,6 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
       showToast("Please enter your email.", "error");
       return;
     }
+
+    // Disable button and show "Please wait..."
+    getOtpButton.disabled = true;
+    getOtpButton.textContent = "Please wait...";
 
     try {
       const response = await fetch("/api/admin/get-otp", {
@@ -53,10 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (err) {
       console.error(err);
       showToast("Something went wrong. Please try again.", "error");
+    } finally {
+      getOtpButton.disabled = false;
+      getOtpButton.textContent = "Get OTP";
     }
   });
 
-  // Reset Password
+  // Handle Reset Password form submission
   resetPasswordForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = resetPasswordForm.email.value.trim();
@@ -74,6 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    // Disable button and show "Authenticating..."
+    resetButton.disabled = true;
+    resetButton.textContent = "Authenticating...";
+
     try {
       const response = await fetch("/api/admin/resetpassword", {
         method: "POST",
@@ -86,20 +108,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (response.ok) {
         showToast(result.message || "Password reset successful.", "success");
         resetPasswordForm.reset();
+        window.location.href = "/api/admin/login";
       } else {
         showToast(result.message || "Failed to reset password.", "error");
       }
     } catch (err) {
       console.error(err);
       showToast("Something went wrong. Please try again.", "error");
+    } finally {
+      resetButton.disabled = false;
+      resetButton.textContent = "Reset Password";
     }
   });
 });
-function togglePasswordVisibility(inputId) {
-  const input = document.getElementById(inputId);
-  const toggleBtn = event.currentTarget;
-
-  const isPassword = input.type === "password";
-  input.type = isPassword ? "text" : "password";
-  toggleBtn.innerHTML = isPassword ? "🙈" : "👁️";
-}
