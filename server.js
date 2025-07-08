@@ -23,6 +23,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // EJS template setup
 app.set("view engine", "ejs");
 app.set("views", "./views");
+// Enable trust proxy
+app.set("trust proxy", true);
+
+// IP extraction utility
+const getClientIp = (req) => {
+  return (
+    req.headers["x-forwarded-for"]?.split(",")[0] ||
+    req.connection?.remoteAddress ||
+    req.socket?.remoteAddress ||
+    req.connection?.socket?.remoteAddress
+  );
+};
+
+// Route using IP
+app.get("/geo", async (req, res) => {
+  const ip = getClientIp(req);
+  const geoData = await getGeoLocation(ip);
+  res.json({ ip, geoData });
+});
 
 // Serve static files
 app.use(express.static("public"));
@@ -31,7 +50,6 @@ app.use(express.static("public"));
 app.use("/", mainRoutes);
 app.use("/security", userRoutes);
 app.use("/api/admin", adminRoutes);
-
 
 // 404 handler
 app.use((req, res) => {
