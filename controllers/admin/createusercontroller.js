@@ -8,16 +8,40 @@ const createUserValidationRules = [
     .trim()
     .notEmpty()
     .withMessage("User ID is required.")
-    .isLength({ min: 4 })
-    .withMessage("User ID must be at least 4 characters.")
+    .isLength({ min: 6 })
+    .withMessage("User ID must be at least 6 characters.")
     .escape(),
 
   body("pin")
     .trim()
     .notEmpty()
     .withMessage("PIN is required.")
-    .isLength({ min: 4 })
-    .withMessage("PIN must be at least 4 digits.")
+    .isLength({ min: 8 })
+    .withMessage("PIN must be at least 8 digits.")
+    .matches(/^\d+$/)
+    .withMessage("PIN must contain only digits.")
+    .custom((value) => {
+      const sequentialPatterns = [
+        "0123456789",
+        "1234567890",
+        "9876543210",
+        "0987654321",
+      ];
+
+      for (let pattern of sequentialPatterns) {
+        for (let i = 0; i <= pattern.length - value.length; i++) {
+          if (pattern.slice(i, i + value.length) === value) {
+            throw new Error("PIN must not be sequential digits.");
+          }
+        }
+      }
+
+      if (/(\d)\1{1,}/.test(value)) {
+        throw new Error("PIN must not contain repeated consecutive digits.");
+      }
+
+      return true;
+    })
     .escape(),
 ];
 
