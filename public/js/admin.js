@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const signupForm = document.querySelector('form[action="/admin/signup"]');
+  const signupForm = document.getElementById("signupForm");
+  if (!signupForm) {
+    showToast("signup form not found");
+    return;
+  }
 
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -20,11 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute("content");
+
       const res = await fetch("/api/admin/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -74,17 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(div);
     return div;
   }
-
-  
 });
 
 function toggleVisibility(inputId, iconElement) {
-    const input = document.getElementById(inputId);
-    if (input.type === "password") {
-      input.type = "text";
-      iconElement.textContent = "🙈"; // eye-off emoji
-    } else {
-      input.type = "password";
-      iconElement.textContent = "👁️"; // eye emoji
-    }
+  const input = document.getElementById(inputId);
+  if (input.type === "password") {
+    input.type = "text";
+    iconElement.textContent = "🙈"; // eye-off emoji
+  } else {
+    input.type = "password";
+    iconElement.textContent = "👁️"; // eye emoji
   }
+}

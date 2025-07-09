@@ -1,6 +1,8 @@
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/adminmodel");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const signupValidationRules = [
   body("email")
@@ -47,7 +49,9 @@ const adminSignupController = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const existingAdmin = await Admin.findOne({ email: email.toLowerCase().trim() });
+    const existingAdmin = await Admin.findOne({
+      email: email.toLowerCase().trim(),
+    });
     if (existingAdmin) {
       return res.status(409).json({ message: "Admin already exists" });
     }
@@ -57,8 +61,21 @@ const adminSignupController = async (req, res) => {
       password: hashedPassword,
       role: "admin",
     });
-    
+
     await admin.save();
+
+    const token = jwt.sign(
+      { adminId: admin._id, email: admin.email },
+      JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+
+    res.cookie("admin_jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 2 * 60 * 60 * 1000,
+      sameSite: "lax",
+    });
 
     return res.status(201).json({ message: "Admin registered successfully" });
   } catch (err) {

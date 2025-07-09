@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const resetPasswordForm = document.getElementById("reset-password-form");
   const getOtpButton = getOtpForm.querySelector("button[type='submit']");
   const resetButton = resetPasswordForm.querySelector("button[type='submit']");
+  const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute("content");
 
   // Toast Function
   function showToast(message, type = "info") {
@@ -54,7 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch("/api/admin/get-otp", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "CSRF-Token": csrfToken,
+        },
+        credentials: "include",
         body: JSON.stringify({ email }),
       });
 
@@ -99,7 +106,11 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch("/api/admin/resetpassword", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "CSRF-Token": csrfToken,
+        },
+        credentials: "include",
         body: JSON.stringify({ email, otp, newPassword }),
       });
 

@@ -1,68 +1,81 @@
 <%- include('partials/header') %>
-    <main class="flex-grow p-4 max-w-7xl mx-auto">
-        <h2 class="text-xl md:text-3xl font-semibold mb-6">Welcome, Admin</h2>
+    <main class="pt-20 px-4 pb-20 md:pb-0">
+        <div class="flex-grow p-4 max-w-7xl mx-auto">
+            <h2 class="text-xl md:text-3xl font-semibold mb-6">Welcome, Admin</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <!-- Card: Bruteforce Logs -->
-            <a href="/api/admin/bruteforceattacklogs"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">Bruteforce Logs</h3>
-                    <p class="text-gray-400 text-sm">View and analyze bruteforce attack attempts.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Card: Bruteforce Logs -->
+                <a href="/api/admin/bruteforceattacklogs"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Bruteforce Logs</h3>
+                        <p class="text-gray-400 text-sm">View and analyze bruteforce attack attempts.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
 
-            <!-- Card: Password Reset Logs -->
-            <a href="/api/admin/passwordresetlogs"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">Password Reset Logs</h3>
-                    <p class="text-gray-400 text-sm">Track password reset activities and history.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+                <!-- Card: Password Reset Logs -->
+                <a href="/api/admin/passwordresetlogs"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Password Reset Logs</h3>
+                        <p class="text-gray-400 text-sm">Track password reset activities and history.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
 
-            <!-- Card: Settings -->
-            <a href="/api/admin/settings"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">Settings</h3>
-                    <p class="text-gray-400 text-sm">Configure system preferences and options.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+                <!-- Card: Settings -->
+                <a href="/api/admin/settings"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Settings</h3>
+                        <p class="text-gray-400 text-sm">Configure system preferences and options.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
 
-            <!-- Card: Authenticate User -->
-            <a href="/api/admin/authenticate-user"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">Authenticate User</h3>
-                    <p class="text-gray-400 text-sm">Verify user identities and access rights.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+                <!-- Card: Authenticate User -->
+                <a href="/api/admin/authenticate-user"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Authenticate User</h3>
+                        <p class="text-gray-400 text-sm">Verify user identities and access rights.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
 
-            <!-- Card: User Logs -->
-            <a href="/api/admin/user-logs"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">User Logs</h3>
-                    <p class="text-gray-400 text-sm">Monitor user activities and system usage.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+                <!-- Card: User Logs -->
+                <a href="/api/admin/user-logs"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">User Logs</h3>
+                        <p class="text-gray-400 text-sm">Monitor user activities and system usage.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
 
-            <!-- Card: View Users -->
-            <a href="/api/admin/viewusers"
-                class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
-                <div>
-                    <h3 class="text-lg font-semibold mb-2">View Users</h3>
-                    <p class="text-gray-400 text-sm">Browse and manage user accounts.</p>
-                </div>
-                <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
-            </a>
+                <!-- Card: View Users -->
+                <a href="/api/admin/viewusers"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">View Users</h3>
+                        <p class="text-gray-400 text-sm">Browse and manage user accounts.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
+
+                <!-- Card: Admin Login Log -->
+                <a href="/api/admin/adminlog"
+                    class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between hover:bg-green-700 transition-colors duration-300">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Admin Login Log</h3>
+                        <p class="text-gray-400 text-sm">View admin login activities and history.</p>
+                    </div>
+                    <div class="mt-4 text-green-400 font-bold">Go &rarr;</div>
+                </a>
+            </div>
         </div>
     </main>
+
 
     <%- include('partials/footer') %>

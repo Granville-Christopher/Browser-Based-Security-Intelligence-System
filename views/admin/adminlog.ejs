@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+    <header class="bg-gray-800 p-4 shadow-md flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Admin Login Log</h1>
+        <nav>
+            <a href="/admin/admin" class="text-green-400 hover:text-green-600 font-semibold">Dashboard</a>
+        </nav>
+    </header>
+
+    <main class="flex-grow p-4 max-w-7xl mx-auto overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-800">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Timestamp</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Admin ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">IP Address</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-gray-900 divide-y divide-gray-700">
+                <% if (logs && logs.length > 0) { %>
+                    <% logs.forEach(function(log) { %>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm"><%= new Date(log.createdAt).toLocaleString() %></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm"><%= log.email %></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm"><%= log.location %></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm"><%= log.ip %></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm"><%= log.success %></td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">No logs found.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

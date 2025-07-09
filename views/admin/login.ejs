@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
+    <meta name="csrf-token" content="<%= csrfToken %>">
+
 </head>
 
 <body class="bg-cover bg-center bg-fixed min-h-screen flex items-center justify-center"
@@ -16,7 +18,9 @@
 
     <div class=" p-8  z-20 rounded-2xl w-full max-w-sm">
         <h1 class="text-2xl font-semibold text-center text-white mb-6">Admin Login</h1>
-        <form method="POST" action="/api/admin/login" class="flex flex-col space-y-6">
+        <form class="flex flex-col space-y-6">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
             <div class="text-center text-red-500 bg-gray-50 rounded bg-opacity-80 text-sm py-1 font-semibold mt-4">
                 <p>Enter your Credentials to access the system.</p>
             </div>
@@ -31,7 +35,8 @@
                 Submit
             </button>
             <div class="text-center text-sm text-gray-400 mt-4">
-                <p>Forgotten password?<a href="/api/admin/resetpassword" class="text-green-500 hover:underline"> reset password here</a></p>
+                <p>Forgotten password?<a href="/api/admin/resetpassword" class="text-green-500 hover:underline"> reset
+                        password here</a></p>
             </div>
         </form>
     </div>

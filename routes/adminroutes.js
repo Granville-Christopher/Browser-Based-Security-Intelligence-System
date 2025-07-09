@@ -2,7 +2,7 @@ const {
   signupValidationRules,
   adminSignupController,
 } = require("../controllers/admin/admincontroller");
-const adminLoginController = require("../controllers/admin/adminlogincontroller.");
+const adminLoginController = require("../controllers/admin/adminlogincontroller");
 const {
   createUserValidationRules,
   createUserController,
@@ -17,6 +17,8 @@ const PasswordResetLog = require("../models/passwordresetlog");
 const csrf = require("csurf");
 const csrfProtection = csrf({ cookie: true });
 const User = require("../models/usermodel");
+const verifyAdminJWT = require("../middlewares/verifyadminjwt");
+const adminLog = require("../models/adminloginlog");
 
 // IP extraction utility
 const getClientIp = (req) => {
@@ -47,35 +49,38 @@ router.get("/geo", async (req, res) => {
 });
 
 // Other admin routes
-router.get("/admin", (req, res) => {
+router.get("/admin", verifyAdminJWT, (req, res) => {
   return res.status(200).render("admin/admin", {
     title: "Admin Dashboard",
     message: "Welcome to the Admin Dashboard",
   });
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", csrfProtection, (req, res) => {
   return res.status(200).render("admin/login", {
     title: "Admin - Login",
     message: "Admin login",
+    csrfToken: req.csrfToken(),
   });
 });
 
-router.get("/signup", (req, res) => {
+router.get("/signup", csrfProtection, (req, res) => {
   return res.status(200).render("admin/signup", {
     title: "Admin - Signup",
     message: "Admin signup",
+    csrfToken: req.csrfToken(),
   });
 });
 
-router.get("/resetpassword", (req, res) => {
+
+router.get("/resetpassword", verifyAdminJWT, (req, res) => {
   return res.status(200).render("admin/resetpassword", {
     title: "Admin - Signup",
     message: "Admin signup",
   });
 });
 
-router.get("/passwordresetlogs", async (req, res) => {
+router.get("/passwordresetlogs", verifyAdminJWT, async (req, res) => {
   try {
     const logs = await PasswordResetLog.find()
       .sort({ createdAt: -1 })
@@ -84,6 +89,7 @@ router.get("/passwordresetlogs", async (req, res) => {
       return res.status(404).render("admin/password-reset-logs", {
         title: "Admin - Password Reset Logs",
         message: "No password reset logs found.",
+        logs: [],
       });
     }
 
@@ -102,7 +108,33 @@ router.get("/passwordresetlogs", async (req, res) => {
   }
 });
 
-router.get("/bruteforceattacklogs", async (req, res) => {
+router.get("/adminlog", verifyAdminJWT, async (req, res) => {
+  try {
+    const logs = await adminLog.find().sort({ createdAt: -1 }).limit(100);
+    if (!logs || logs.length === 0) {
+      return res.status(404).render("admin/adminlog", {
+        title: "Admin Logs",
+        message: "Admin logs",
+        logs: [],
+      });
+    }
+
+    return res.status(200).render("admin/adminlog", {
+      title: "Admin Logs",
+      message: "Admin Logs",
+      logs,
+    });
+  } catch (err) {
+    console.error("error fetching logs");
+    return res.status(500).render("admin/adminlogs", {
+      title: "Admin Logs",
+      message: "Admin Logs",
+      logs: [],
+    });
+  }
+});
+
+router.get("/bruteforceattacklogs", verifyAdminJWT, async (req, res) => {
   try {
     const logs = await bruteforceAttackLogs
       .find()
@@ -130,7 +162,7 @@ router.get("/bruteforceattacklogs", async (req, res) => {
   }
 });
 
-router.get("/authenticate-user", csrfProtection, (req, res) => {
+router.get("/authenticate-user", csrfProtection, verifyAdminJWT, (req, res) => {
   res.render("admin/authenticate-user", {
     title: "Authenticate User",
     message: "Admin Authenticate User",
@@ -138,21 +170,21 @@ router.get("/authenticate-user", csrfProtection, (req, res) => {
   });
 });
 
-router.get("/userlogs", (req, res) => {
+router.get("/user-logs", verifyAdminJWT, (req, res) => {
   return res.status(200).render("admin/user-logs", {
     title: "Admin - User Logs",
     message: "Admin User Logs",
   });
 });
 
-router.get("/settings", (req, res) => {
+router.get("/settings", verifyAdminJWT, (req, res) => {
   return res.status(200).render("admin/settings", {
     title: "Admin - Settings",
     message: "Admin Settings",
   });
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/user/:id", verifyAdminJWT, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
@@ -178,7 +210,7 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-router.get("/viewusers", async (req, res) => {
+router.get("/viewusers", verifyAdminJWT, async (req, res) => {
   try {
     const allUsers = await User.find().sort({ createdAt: -1 }).limit(100);
     if (!allUsers || allUsers.length === 0) {
@@ -203,55 +235,82 @@ router.get("/viewusers", async (req, res) => {
   }
 });
 
-router.post("/signup", signupValidationRules, adminSignupController);
+router.post("/signup", csrfProtection, signupValidationRules, adminSignupController);
+
 router.post("/login", adminLoginController);
-router.post("/get-otp", getOtpController);
-router.post("/resetpassword", resetPasswordController);
-router.post("/create-user", createUserValidationRules, createUserController);
-router.post("/user/:userId/block", async (req, res) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { userId: req.params.userId },
-      { accountStatus: "blocked" },
-      { new: true }
-    );
+router.post("/get-otp", csrfProtection, getOtpController);
+router.post("/resetpassword", csrfProtection, resetPasswordController);
 
-    if (!user) return res.status(404).json({ message: "User not found." });
-    return res.json({ message: "User access blocked." });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error." });
+router.post(
+  "/create-user",
+  verifyAdminJWT,
+  csrfProtection,
+  createUserValidationRules,
+  createUserController
+);
+
+router.post(
+  "/user/:userId/block",
+  verifyAdminJWT,
+  csrfProtection,
+  async (req, res) => {
+    try {
+      const user = await User.findOneAndUpdate(
+        { userId: req.params.userId },
+        { accountStatus: "blocked" },
+        { new: true }
+      );
+
+      if (!user) return res.status(404).json({ message: "User not found." });
+      return res.json({ message: "User access blocked." });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Server error." });
+    }
   }
-});
+);
 
-// POST /api/admin/user/:userId/grant
-router.post("/user/:userId/grant", async (req, res) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { userId: req.params.userId },
-      { accountStatus: "accessible" },
-      { new: true }
-    );
+router.post(
+  "/user/:userId/grant",
+  verifyAdminJWT,
+  csrfProtection,
+  async (req, res) => {
+    try {
+      const user = await User.findOneAndUpdate(
+        { userId: req.params.userId },
+        { accountStatus: "accessible" },
+        { new: true }
+      );
 
-    if (!user) return res.status(404).json({ message: "User not found." });
-    return res.json({ message: "User access granted." });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error." });
+      if (!user) return res.status(404).json({ message: "User not found." });
+      return res.json({ message: "User access granted." });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Server error." });
+    }
   }
-});
+);
 
-// POST /api/admin/user/:userId/delete
-router.post("/user/:userId/delete", async (req, res) => {
-  try {
-    const user = await User.findOneAndDelete({ userId: req.params.userId });
-    if (!user) return res.status(404).json({ message: "User not found." });
+router.post(
+  "/user/:userId/delete",
+  verifyAdminJWT,
+  csrfProtection,
+  async (req, res) => {
+    try {
+      const user = await User.findOneAndDelete({ userId: req.params.userId });
+      if (!user) return res.status(404).json({ message: "User not found." });
 
-    return res.status(200).json({ message: "User deleted successfully." });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error." });
+      return res.status(200).json({ message: "User deleted successfully." });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Server error." });
+    }
   }
+);
+
+router.post("/logout", (req, res) => {
+  res.clearCookie("admin_jwt");
+  res.status(200).json({ message: "Logged out successfully." });
 });
 
 module.exports = router;

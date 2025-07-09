@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.querySelector("form");
   const passwordInput = loginForm.querySelector('input[name="password"]');
+  const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute("content");
 
   const toggleBtn = document.createElement("span");
   toggleBtn.innerHTML = "👁️";
@@ -54,7 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "CSRF-Token": csrfToken,
+        },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
