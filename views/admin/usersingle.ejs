@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+    <script>
+        const userId = "<%= user.userId %>";
+    </script>
+    <header class="bg-gray-800 p-4 shadow-md flex items-center justify-between">
+        <nav>
+            <a href="/api/admin/view-users" class="text-green-400 hover:text-green-600 font-semibold">Back to Users</a>
+        </nav>
+    </header>
+
+    <main class="flex-grow p-4 max-w-3xl mx-auto">
+        <section id="user-section" data-user-id="<%= user.userId %>" class="bg-gray-800 p-6 rounded-lg shadow-md">
+
+            <div class="grid grid-cols-2 justify-between items-center">
+                <div class="details">
+                    <h2 class="text-xl font-semibold mb-4">User ID: <%= user.userId %>
+                    </h2>
+                    <p class="mb-6">Account Status: <span class="font-semibold">
+                            <%= user.accountStatus || 'Unknown' %>
+                        </span></p>
+                </div>
+                <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                    <button id="deleteUserBtn"
+                        class="flex-1 bg-red-600 hover:bg-red-700 px-2 whitespace-nowrap text-white font-semibold py-2 rounded transition duration-300">
+                        Delete User
+                    </button>
+                    <button id="blockAccessBtn"
+                        class="flex-1 bg-yellow-600 hover:bg-yellow-700 px-2 whitespace-nowrap text-white font-semibold py-2 rounded transition duration-300">
+                        Block Access
+                    </button>
+                    <button id="grantAccessBtn"
+                        class="flex-1 bg-green-600 hover:bg-green-700 px-2 whitespace-nowrap text-white font-semibold py-2 rounded transition duration-300">
+                        Grant Access
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Toast container -->
+        <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    </main>
+    <script src="/js/manipulateuser.js"></script>
+
+    <%- include('partials/footer') %>

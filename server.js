@@ -8,6 +8,8 @@ const userRoutes = require("./routes/basicroutes");
 const mainRoutes = require("./routes/indexroute");
 const adminRoutes = require("./routes/adminroutes");
 const connectDB = require("./db");
+const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 
 // Load environment variables
 dotenv.config();
@@ -19,30 +21,43 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// EJS template setup
+// EJS view engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
-// Enable trust proxy
 app.set("trust proxy", true);
-
 
 // Serve static files
 app.use(express.static("public"));
 
-// Routes
+const csrfProtection = csrf({ cookie: true });
+
+// Main routes (public site/pages)
 app.use("/", mainRoutes);
+
+// Security routes (e.g. login, register APIs) — NO CSRF
 app.use("/security", userRoutes);
-app.use("/api/admin", adminRoutes);
+
+// Admin panel (with CSRF for EJS forms)
+app.use(
+  "/api/admin",
+  csrfProtection,
+  (req, res, next) => {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+  },
+  adminRoutes
+);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).render("404");
 });
 
-// Error handler
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error("Error occurred:", err);
+  console.error("Error occurred:", err.message || err);
   res.status(500).json({ message: "Internal server error" });
 });
 

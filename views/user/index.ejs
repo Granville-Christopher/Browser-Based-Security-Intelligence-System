@@ -7,7 +7,6 @@
     <title>AI Security Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (Free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -97,11 +96,9 @@
 </head>
 
 <body class="min-h-screen flex flex-col">
-    <!-- Header - Fixed at the top -->
     <header
         class="fixed top-0 left-0 w-full bg-gray-900 shadow-lg p-4 md:p-6 flex justify-between items-center rounded-b-lg z-50">
         <div class="flex items-center space-x-3">
-            <!-- Security Icon (Shield) -->
             <i class="fa-solid fa-shield-halved text-4xl text-green-400"></i>
             <h1 class="text-2xl md:text-3xl font-bold text-white">AI Security Command Center</h1>
         </div>
@@ -113,13 +110,10 @@
         </a>
     </header>
 
-    <!-- Main Content Area -->
     <main class=" mx-auto py-6 flex-grow">
-        <div class="bg-gray-900 z-10 inset-0 bg-opacity-50 min-h-screen fixed"></div>
-        <!-- Hero Section -->
+        <div class="bg-gray-900 z-10 inset-0 bg-opacity-70 min-h-screen fixed"></div>
         <section
             class="relative mt-16 p-8 md:p-12 rounded-lg shadow-xl mb-8 overflow-hidden min-h-screen justify-center items-center flex flex-col">
-            <!-- Background Image/Overlay - Replace with a relevant security-themed image -->
             <div class=" inset-0">
                 <img src="/img/pexels-hyundaimotorgroup-19317897.jpg" alt="Security Command Center Background"
                     class="absolute inset-0 w-full h-full object-cover">
@@ -144,12 +138,11 @@
             </div>
         </section>
 
-        <!-- What It Does (Core Outcome) -->
         <section
-            class="px-32 relative inset-0 p-6 z-20 rounded-lg shadow-xl mb-8 flex flex-col md:flex-row items-center md:space-x-8">
+            class="lg:px-32 relative inset-0 p-6 z-20 rounded-lg shadow-xl mb-8 flex flex-col md:flex-row items-center md:space-x-8">
             <div class="md:w-1/2 mb-6 md:mb-0">
                 <h2 class="text-xl md:text-2xl font-semibold text-green-400 mb-4">What It Does (Core Outcome)</h2>
-                <ul class="list-disc list-inside text-white space-y-2">
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
                     <li>Accepts live or recorded CCTV streams</li>
                     <li>Analyzes feeds in real time for events like intrusion, loitering, tailgating, etc.</li>
                     <li>Sends instant alerts to dashboard/SMS/email</li>
@@ -158,14 +151,12 @@
                 </ul>
             </div>
             <div class="md:w-1/2 flex justify-center">
-                <!-- Placeholder for an image representing core outcomes -->
                 <img src="/img/menic.jpg" alt="Core Outcomes Visual"
                     class="rounded-lg shadow-md object-cover h-56 object-center w-full max-w-sm">
             </div>
         </section>
 
-        <!-- Business Case (Kept as it describes value proposition) -->
-        <section class="px-32 z-20 relative p-6 mb-8 flex flex-col md:flex-row items-center md:space-x-8">
+        <section class="lg:px-32 z-20 relative p-6 mb-8 flex flex-col md:flex-row items-center md:space-x-8">
             <div class="md:w-1/2 flex justify-center order-2 md:order-1">
                 <img src="/img/secure.jpg" alt="Business Value Visual"
                     class="rounded-lg shadow-md object-cover object-top w-full h-56 max-w-sm">
@@ -181,47 +172,42 @@
             </div>
         </section>
 
-        <!-- Section for showcasing images/videos of the system in action -->
-        <section class="px-32 bg-gray-800 p-6 rounded-lg shadow-xl z-20 relative">
+        <section class="lg:px-32 bg-gray-800 p-6 mb-6 md:mb-0 rounded-lg shadow-xl z-20 relative">
             <h2 class="text-xl md:text-2xl font-semibold text-green-400 mb-4">See Our System in Action</h2>
             <p class="text-gray-300 mb-6 leading-relaxed">
                 Discover how our AI Security Command Center delivers on its promises, providing actionable intelligence
                 and streamlining your security operations.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- 1. Accepts live or recorded CCTV streams & Analyzes feeds in real time -->
-                <div class=" rounded-lg overflow-hidden ">
+                <div class=" rounded-t-lg overflow-hidden ">
                     <img src="/img/veths.jpg" alt="Live Stream Analysis"
                         class="w-full h-auto object-cover rounded-t-lg">
-                    <p class="p-3 text-gray-400 text-sm text-center">
+                    <p class="p-3 text-gray-400 text-xs lg:text-sm text-center">
                         <span class="font-semibold text-white">Intelligent Stream Analysis:</span> Our system processes
                         live or recorded CCTV feeds to detect events like intrusion, loitering, and tailgating in
                         real-time.
                     </p>
                 </div>
-                <!-- 2. Sends instant alerts to dashboard/SMS/email -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden border border-gray-700">
+                <div class="bg-gray-900 rounded-t-lg overflow-hidden border border-gray-700">
                     <img src="/img/ctrlrm.jpg" alt="Instant Alerts Dashboard"
                         class="w-full h-auto object-cover rounded-t-lg">
-                    <p class="p-3 text-gray-400 text-sm text-center">
+                    <p class="p-3 text-gray-400 text-xs lg:text-sm text-center">
                         <span class="font-semibold text-white">Instant Alerting:</span> Receive immediate notifications
                         via dashboard, SMS, or email for critical security events.
                     </p>
                 </div>
-                <!-- 3. Creates a timeline of events with snapshots -->
-                <div class="rounded-lg overflow-hidden">
+                <div class="rounded-t-lg overflow-hidden">
                     <img src="/img/timeline.jpg" alt="Event Timeline with Snapshots"
                         class="w-full h-auto object-cover rounded-t-lg">
-                    <p class="p-3 text-gray-400 text-sm text-center">
+                    <p class="p-3 text-gray-400 text-xs lg:text-sm text-center">
                         <span class="font-semibold text-white">Comprehensive Event Timeline:</span> Review a
                         chronological timeline of all detected events, complete with relevant snapshots.
                     </p>
                 </div>
-                <!-- 4. Logs incident reports for review/export -->
-                <div class="bg-gray-900 rounded-lg overflow-hidden border border-gray-700">
+                <div class="bg-gray-900 rounded-t-lg overflow-hidden border border-gray-700">
                     <img src="/img/secure.jpg" alt="Incident Report View"
                         class="w-full h-auto object-cover rounded-t-lg">
-                    <p class="p-3 text-gray-400 text-sm text-center">
+                    <p class="p-3 text-gray-400 text-xs lg:text-sm text-center">
                         <span class="font-semibold text-white">Detailed Incident Reports:</span> Access and export
                         logged incident reports for thorough review and compliance.
                     </p>
@@ -230,8 +216,7 @@
             </div>
         </section>
     </main>
-
-    <!-- Footer - Fixed at the bottom -->
+    
     <footer class="fixed bottom-0 left-0 w-full bg-gray-900 p-4 text-center text-gray-500 text-sm rounded-t-lg z-50">
         &copy; 2025 AI Security Command Center. All rights reserved.
     </footer>
