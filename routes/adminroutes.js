@@ -19,7 +19,7 @@ const csrfProtection = csrf({ cookie: true });
 const User = require("../models/usermodel");
 const verifyAdminJWT = require("../middlewares/verifyadminjwt");
 const adminLog = require("../models/adminloginlog");
-
+const userLogs = require('../models/userloginattempts')
 // IP extraction utility
 const getClientIp = (req) => {
   return (
@@ -170,11 +170,28 @@ router.get("/authenticate-user", csrfProtection, verifyAdminJWT, (req, res) => {
   });
 });
 
-router.get("/user-logs", verifyAdminJWT, (req, res) => {
-  return res.status(200).render("admin/user-logs", {
-    title: "Admin - User Logs",
-    message: "Admin User Logs",
-  });
+router.get("/user-logs", verifyAdminJWT, async (req, res) => {
+  try{
+    const logs = await userLogs.find().sort({ createdAt: -1 }).limit(100);
+    if(!logs){
+      return res.status(404).render('admin/user-logs', {
+        title: "Admin - User-logs",
+        message: " User-logs",
+        logs: [],
+      })
+    }
+    return res.status(200).render("admin/user-logs", {
+      title: "Admin - User Logs",
+      message: "User Logs",
+      logs,
+    });
+  }catch(err){
+    return res.status(500).render('admin/user-logs', {
+      title: "Admin - User-logs",
+      message: "AUser-logs",
+      logs: [],
+    });
+  }
 });
 
 router.get("/settings", verifyAdminJWT, (req, res) => {
