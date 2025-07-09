@@ -1,6 +1,6 @@
 <%- include('partials/header', { title: 'Admin - Authenticate User' }) %>
-    <main class="flex-grow p-4 max-w-7xl mx-auto ">
-        <section class="max-w-md mx-auto mb-3">
+    <main class="flex-grow p-4 pt-20 max-w-7xl mx-auto  ">
+        <section class="max-w-md mx-auto mb-3 justify-center items-center">
             <h2 class="text-2xl font-semibold mb-4">Authenticate User</h2>
             <form id="authenticateUserForm" class="bg-gray-800 p-6 rounded-lg shadow-md">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
@@ -18,29 +18,11 @@
                     Authenticate User
                 </button>
             </form>
-
+            <section class="mb-8 max-w-md mx-auto flex justify-between space-x-4">
+                <a href="/api/admin/viewusers"></a>
+            </section>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">Change PIN</h2>
-            <form id="changePinForm" class="bg-gray-800 p-6 rounded-lg shadow-md max-w-md mx-auto">
-                <label for="changePinInput" class="block text-gray-300 mb-2">Enter new PIN:</label>
-                <input type="password" id="changePinInput" name="pin" required
-                    class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-400" />
-                <button type="submit"
-                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-300">Change
-                    PIN</button>
-            </form>
-        </section>
-
-        <section class="mb-8 max-w-md mx-auto flex justify-between space-x-4">
-            <button id="blockUserBtn"
-                class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded transition duration-300">Block
-                User Access</button>
-            <button id="unblockUserBtn"
-                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded transition duration-300">Unblock
-                User Access</button>
-        </section>
 
     </main>
     <script src="/js/createuser.js"></script>
