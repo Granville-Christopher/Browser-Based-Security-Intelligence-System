@@ -54,10 +54,17 @@
 </head>
 
 <body class="bg-gray-100 font-sans transition-colors duration-300">
+    <!-- Navbar for small screens -->
+    <nav class="md:hidden flex items-center justify-between bg-gray-900 text-white px-4 py-3">
+        <span class="font-bold text-lg">&nbsp;</span>
+        <button id="hamburgerMenu" class="p-2 rounded hover:bg-gray-700" title="Toggle Sidebar">
+            <i data-lucide="menu"></i>
+        </button>
+    </nav>
     <div class="flex flex-col md:flex-row h-screen">
         <!-- Sidebar -->
         <div id="sidebar"
-            class="w-full md:w-64 bg-gray-900 text-white flex md:flex-col p-4 space-y-2 md:space-y-4 sidebar-animate">
+            class="fixed top-0 left-0 w-full h-full bg-gray-900 text-white flex flex-col p-4 space-y-4 sidebar-animate z-40 md:static md:w-80 md:h-auto md:flex md:flex-col md:space-y-4 md:bg-gray-900 md:z-auto hidden md:block">
             <div class="flex justify-between items-center mb-4">
                 <span class="font-semibold text-lg">Navigation</span>
                 <button onclick="toggleDarkMode()" class="p-1 rounded hover:bg-gray-700 icon-animate"
@@ -84,7 +91,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-4 overflow-y-auto">
+        <div id="mainContent" class="p-4 overflow-y-auto w-full ">
             <div id="dashboard" class="section fade hidden">
                 <h1 class="text-2xl font-bold mb-4">Live Camera Dashboard</h1>
 

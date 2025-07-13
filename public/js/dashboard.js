@@ -45,6 +45,14 @@ function showSection(sectionId) {
   const current = document.querySelector(".section:not(.hidden)");
   const next = document.getElementById(sectionId);
 
+  // Always close sidebar and show main content on small screens when a sidebar item is clicked
+  if (window.innerWidth < 768) {
+    const sidebar = document.getElementById("sidebar");
+    const mainContent = document.getElementById("mainContent");
+    sidebar.classList.add("hidden");
+    mainContent.classList.remove("hidden");
+  }
+
   if (current === next) return;
 
   if (current) {
@@ -73,8 +81,51 @@ function applySavedTheme() {
   }
 }
 
+function setupSidebarToggle() {
+  const hamburgerMenu = document.getElementById("hamburgerMenu");
+  const sidebar = document.getElementById("sidebar");
+  const mainContent = document.getElementById("mainContent");
+
+  function showSidebar() {
+    sidebar.classList.remove("hidden");
+    mainContent.classList.add("hidden");
+  }
+
+  function hideSidebar() {
+    sidebar.classList.add("hidden");
+    mainContent.classList.remove("hidden");
+  }
+
+  hamburgerMenu.addEventListener("click", () => {
+    if (sidebar.classList.contains("hidden")) {
+      showSidebar();
+    } else {
+      hideSidebar();
+    }
+  });
+
+  // Hide sidebar on resize to medium and up, show main content
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) {
+      sidebar.classList.remove("hidden");
+      mainContent.classList.remove("hidden");
+    } else {
+      hideSidebar();
+    }
+  });
+
+  // Initialize sidebar state based on window size
+  if (window.innerWidth < 768) {
+    hideSidebar();
+  } else {
+    sidebar.classList.remove("hidden");
+    mainContent.classList.remove("hidden");
+  }
+}
+
 applySavedTheme();
 loadSettings();
 const savedSection = localStorage.getItem("activeSection") || "dashboard";
 showSection(savedSection);
 lucide.createIcons();
+setupSidebarToggle();
