@@ -1,5 +1,5 @@
-const User = require("../../models/usermodel");
-const LoginAttempt = require("../../models/userloginattempts");
+const User = require("../../models/user/usermodel");
+const LoginAttempt = require("../../models/user/userloginattempts");
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const rateLimit = require("express-rate-limit");

@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
 const sanitizeHtml = require("sanitize-html");
-const User = require("../../models/usermodel");
+const User = require("../../models/user/usermodel");
 
 const createUserValidationRules = [
   body("userId")

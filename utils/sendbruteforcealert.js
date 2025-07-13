@@ -1,6 +1,6 @@
 const nodemailer = require("../config/nodemailer.config");
 const getGeoLocation = require("./geoIP");
-const BruteForceLog = require("../models/bruteforcelog");
+const BruteForceLog = require("../models/admin/bruteforcelog");
 const dotenv = require("dotenv");
 dotenv.config();
 

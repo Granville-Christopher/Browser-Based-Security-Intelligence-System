@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
-const Admin = require("../../models/adminmodel");
+const Admin = require("../../models/admin/adminmodel");
 const nodemailer = require("../../config/nodemailer.config");
 const getGeoLocation = require("../../utils/geoIP");
-const PasswordResetLog = require("../../models/passwordresetlog");
+const PasswordResetLog = require("../../models/admin/passwordresetlog");
 const reverseGeocode = require("../../utils/reversegeocode");
 
 

@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const Admin = require("../../models/adminmodel");
+const Admin = require("../../models/admin/adminmodel");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 

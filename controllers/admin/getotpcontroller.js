@@ -1,4 +1,4 @@
-const Admin = require("../../models/adminmodel");
+const Admin = require("../../models/admin/adminmodel");
 const crypto = require("crypto");
 const nodemailer = require("../../config/nodemailer.config");
 

@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Admin = require("../../models/adminmodel");
+const Admin = require("../../models/admin/adminmodel");
 const getGeoLocation = require("../../utils/geoIP");
 const reverseGeocode = require("../../utils/reversegeocode");
 const { sendBruteForceAlert } = require("../../utils/sendbruteforcealert");
-const AdminLoginLog = require("../../models/adminloginlog");
+const AdminLoginLog = require("../../models/admin/adminloginlog");
 
 const loginAttempts = new Map();
 const MAX_ATTEMPTS = parseInt(process.env.MAX_ATTEMPTS, 10) || 10;

@@ -12,14 +12,14 @@ const reverseGeocode = require("../utils/reversegeocode");
 const router = require("express").Router();
 const getOtpController = require("../controllers/admin/getotpcontroller");
 const resetPasswordController = require("../controllers/admin/resetpasswordcontroller");
-const bruteforceAttackLogs = require("../models/bruteforcelog");
-const PasswordResetLog = require("../models/passwordresetlog");
+const bruteforceAttackLogs = require("../models/admin/bruteforcelog");
+const PasswordResetLog = require("../models/admin/passwordresetlog");
 const csrf = require("csurf");
 const csrfProtection = csrf({ cookie: true });
-const User = require("../models/usermodel");
+const User = require("../models/user/usermodel");
 const verifyAdminJWT = require("../middlewares/verifyadminjwt");
-const adminLog = require("../models/adminloginlog");
-const userLogs = require('../models/userloginattempts')
+const adminLog = require("../models/admin/adminloginlog");
+const userLogs = require("../models/user/userloginattempts");
 // IP extraction utility
 const getClientIp = (req) => {
   return (
@@ -71,7 +71,6 @@ router.get("/signup", csrfProtection, (req, res) => {
     csrfToken: req.csrfToken(),
   });
 });
-
 
 router.get("/resetpassword", verifyAdminJWT, (req, res) => {
   return res.status(200).render("admin/resetpassword", {
@@ -171,22 +170,22 @@ router.get("/authenticate-user", csrfProtection, verifyAdminJWT, (req, res) => {
 });
 
 router.get("/user-logs", verifyAdminJWT, async (req, res) => {
-  try{
+  try {
     const logs = await userLogs.find().sort({ createdAt: -1 }).limit(100);
-    if(!logs){
-      return res.status(404).render('admin/user-logs', {
+    if (!logs) {
+      return res.status(404).render("admin/user-logs", {
         title: "Admin - User-logs",
         message: " User-logs",
         logs: [],
-      })
+      });
     }
     return res.status(200).render("admin/user-logs", {
       title: "Admin - User Logs",
       message: "User Logs",
       logs,
     });
-  }catch(err){
-    return res.status(500).render('admin/user-logs', {
+  } catch (err) {
+    return res.status(500).render("admin/user-logs", {
       title: "Admin - User-logs",
       message: "AUser-logs",
       logs: [],
@@ -200,29 +199,38 @@ router.get("/settings", verifyAdminJWT, (req, res) => {
     message: "Admin Settings",
   });
 });
-
 router.get("/user/:id", verifyAdminJWT, async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).render("admin/usersingle", {
         title: "Admin - User Not Found",
         message: "User not found.",
         user: {},
+        logs: [],
       });
     }
+
+    const logs = await userLogs
+      .find({ userId: user.userId })
+      .sort({ createdAt: -1 })
+      .limit(100);
 
     return res.status(200).render("admin/usersingle", {
       title: `Admin - User ${user.userId}`,
       message: `Details for user ${user.userId}`,
       user,
+      logs,
     });
   } catch (err) {
     console.error("❌ Error fetching user:", err);
     return res.status(500).render("admin/usersingle", {
       title: "Admin - Error",
       message: "Something went wrong while fetching user details.",
+      user: {},
+      logs: [],
     });
   }
 });
@@ -252,7 +260,12 @@ router.get("/viewusers", verifyAdminJWT, async (req, res) => {
   }
 });
 
-router.post("/signup", csrfProtection, signupValidationRules, adminSignupController);
+router.post(
+  "/signup",
+  csrfProtection,
+  signupValidationRules,
+  adminSignupController
+);
 
 router.post("/login", adminLoginController);
 router.post("/get-otp", csrfProtection, getOtpController);
